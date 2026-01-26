@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace AiChatAPI.Models.Entities;
+
+[Keyless]
+[Table("TransactionCancel_Backup")]
+public partial class TransactionCancel_Backup
+{
+    public long TranId { get; set; }
+
+    public int TransactionStatusId { get; set; }
+
+    public long MemberId { get; set; }
+
+    [Unicode(false)]
+    public string? LogeName { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? ReservationsDate { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? CancleDate { get; set; }
+
+    public int? ReservationZoneId { get; set; }
+
+    public int? ReservationSubZoneId { get; set; }
+}

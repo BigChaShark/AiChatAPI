@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace AiChatAPI.Models.Entities;
+
+[PrimaryKey("TransactionId", "PaymentGatewayMethodId", "Seq")]
+[Table("TransactionDetail_Backup")]
+public partial class TransactionDetail_Backup
+{
+    [Key]
+    public long TransactionId { get; set; }
+
+    [Key]
+    public int PaymentGatewayMethodId { get; set; }
+
+    [Key]
+    public long Seq { get; set; }
+
+    [Unicode(false)]
+    public string? XMLString { get; set; }
+
+    [ForeignKey("PaymentGatewayMethodId")]
+    [InverseProperty("TransactionDetail_Backups")]
+    public virtual PaymentGatewayMethod PaymentGatewayMethod { get; set; } = null!;
+}
