@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Work\\AiChatAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
@@ -54,7 +58,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -62,20 +66,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Work\\AiChatAPI\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAAAsAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-19T10:27:08.471Z",
+              "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Work\\AiChatAPI\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Work\\AiChatAPI\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-01-26T09:16:18.912Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "QueryPlan.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\Ai\\QueryPlan.cs",
               "RelativeDocumentMoniker": "Models\\Ai\\QueryPlan.cs",
@@ -87,7 +91,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
@@ -99,7 +103,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "SchemaHelper.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Data\\SchemaHelper.cs",
               "RelativeDocumentMoniker": "Data\\SchemaHelper.cs",
@@ -111,7 +115,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "AiController.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Controllers\\AiController.cs",
               "RelativeDocumentMoniker": "Controllers\\AiController.cs",
@@ -123,7 +127,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "RagService.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Service\\RagService.cs",
               "RelativeDocumentMoniker": "Service\\RagService.cs",
@@ -135,7 +139,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "AiService.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Service\\AiService.cs",
               "RelativeDocumentMoniker": "Service\\AiService.cs",
@@ -147,20 +151,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
               "ToolTip": "C:\\Work\\AiChatAPI\\appsettings.json",
               "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-01-19T10:38:45.683Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Work\\AiChatAPI\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAAAsAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-19T10:27:08.471Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "IntentResult.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\Intent\\IntentResult.cs",
               "RelativeDocumentMoniker": "Models\\Intent\\IntentResult.cs",
@@ -172,7 +188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "AiRequest.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\Requests\\AiRequest.cs",
               "RelativeDocumentMoniker": "Models\\Requests\\AiRequest.cs",
@@ -184,7 +200,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "AiResponse.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\Responses\\AiResponse.cs",
               "RelativeDocumentMoniker": "Models\\Responses\\AiResponse.cs",
