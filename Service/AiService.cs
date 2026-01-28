@@ -33,7 +33,7 @@ public class AiService
         - Decide whether the user is Asking for database information or Just chatting or asking general questions
 
         Rules:
-        - if in table you select have field named "MemberId" memberIdField = "MemberId" if not found memberIdField = "Id"
+        - if table you select is Member memberIdField = "Id" if select other table memberIdField = "MemberId"
         - If the question can be answered without database data → intentType = "chat"
         - If the question requires data → intentType = "query"
         - For chat, do NOT choose any table
@@ -43,7 +43,7 @@ public class AiService
           "table": "TableName",
           "fields": ["Field1", "Field2"],
           "useMemberId": true,
-          "memberIdField": "MemberId"
+          "memberIdField": "MemberId/Id"
           "intentType": "query" // or "chat"
         }
 
