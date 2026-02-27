@@ -88,6 +88,10 @@
           "memberId": {
             "type": "integer",
             "format": "int64"
+          },
+          "enterPriseId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

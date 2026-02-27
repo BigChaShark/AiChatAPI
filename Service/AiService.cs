@@ -1,24 +1,25 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 using AiChatAPI.Data;
+using AiChatAPI.Models;
 using Newtonsoft.Json;
 
 public class AiService
 {
     private readonly HttpClient _http;
     private readonly IConfiguration _config;
-    private readonly AppDbContext _db; // Add this field to fix the error
+    private readonly APIAIContext _db; // Add this field to fix the error
 
-    public AiService(HttpClient http, IConfiguration config, AppDbContext db)
+    public AiService(HttpClient http, IConfiguration config, APIAIContext db)
     {
         _http = http;
         _config = config;
         _db = db; 
     }
 
-    public async Task<IntentResult> AnalyzeIntent(string question)
+    public async Task<IntentResult> AnalyzeIntent(string question, int enterPriseID)
     {
-        var schemaText = SchemaHelper.GetDatabaseSchema(_db);
+        var schemaText = SchemaHelper.GetDatabaseSchema(_db, enterPriseID);
 
         var prompt = $$"""
         You are an AI that decides how to query a database.
@@ -27,24 +28,55 @@ public class AiService
         {{schemaText}}
 
         Your job:
-        - Decide which table(s) are needed
+        - Decide which table is needed
         - Decide which fields are relevant
-        - Decide whether MemberId is required
-        - Decide whether the user is Asking for database information or Just chatting or asking general questions
+        - Detect if the question is comparison (cheaper, more expensive, higher, lower)
+        - Decide whether this is:
+            - chat
+            - query
+            - compare
 
         Rules:
-        - if table you select is Member memberIdField = "Id" if select other table memberIdField = "MemberId"
-        - If the question can be answered without database data → intentType = "chat"
-        - If the question requires data → intentType = "query"
-        - For chat, do NOT choose any table
+        - If general talk → intentType = "chat"
+        - If asking for data → intentType = "query"
+        - If asking comparison between 2 or more items → intentType = "compare"
 
-        Return JSON only in this exact format:
+        For compare:
+        - Provide table
+        - Provide compareField (like Price)
+        - Provide compareValues (list of item names)
+
+        Return JSON only:
+
+        For query:
         {
           "table": "TableName",
-          "fields": ["Field1", "Field2"],
-          "useMemberId": true,
-          "memberIdField": "MemberId/Id"
-          "intentType": "query" // or "chat"
+          "fields": ["Field1","Field2"],
+          "filters": [
+            {
+              "field": "ColumnName",
+              "operator": "LIKE",
+              "value": "Value"
+            }
+          ],
+          "intentType": "query"
+        }
+
+        For compare:
+        {
+          "table": "TableName",
+          "fields": ["FoodName","Price"],
+          "compareField": "Price",
+          "compareValues": ["ไก่ย่าง","ส้มตำ"],
+          "intentType": "compare"
+        }
+
+        For chat:
+        {
+          "table": "",
+          "fields": [],
+          "filters": [],
+          "intentType": "chat"
         }
 
         Question:
@@ -52,21 +84,24 @@ public class AiService
         """;
 
         var response = await Send(prompt);
-        if (response == null)
-        {
-            throw new InvalidOperationException("The response from the AI service was null.");
-        }
+
+        if (string.IsNullOrWhiteSpace(response))
+            throw new InvalidOperationException("AI response was null.");
 
         var result = JsonConvert.DeserializeObject<IntentResult>(response);
+
         if (result == null)
-        {
-            throw new JsonSerializationException("Failed to deserialize the response into an IntentResult.");
-        }
+            throw new JsonSerializationException("Failed to deserialize.");
+
+        result.Filters ??= new List<FilterCondition>();
+        result.Fields ??= new List<string>();
+        result.Table ??= "";
+        result.IntentType ??= "chat";
 
         return result;
     }
 
-    public async Task<string> GenerateAnswer(string question, object data)
+    public async Task<string> GenerateAnswer(string question, object data , int enterPriseID)
     {
         var prompt = $"""
         Answer the question using the data below.

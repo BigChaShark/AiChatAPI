@@ -1,4 +1,5 @@
 ﻿using AiChatAPI.Data;
+using AiChatAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,7 @@ builder.Services.AddScoped<AiService>();
 builder.Services.AddScoped<RagService>();
 builder.Services.AddScoped<DbQueryService>();
 
-builder.Services.AddDbContext<AppDbContext>(opt =>
+builder.Services.AddDbContext<APIAIContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 var app = builder.Build();
 

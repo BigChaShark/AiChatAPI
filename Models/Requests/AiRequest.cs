@@ -3,5 +3,7 @@
     {
         public string Question { get; set; }
         public long MemberId { get; set; }
-    }
+        
+        public int enterPriseId { get; set; }
+}
 

@@ -10,17 +10,17 @@ public class RagService
         _db = db;
     }
 
-    public async Task<string> Ask(string question, long? memberId)
+    public async Task<string> Ask(string question, long? memberId , int enterPriseID)
     {
-        var intent = await _ai.AnalyzeIntent(question);
+        var intent = await _ai.AnalyzeIntent(question, enterPriseID);
         switch (intent.IntentType)
         {
             case "query":
-                var data = await _db.Query(intent, memberId);
-                return await _ai.GenerateAnswer(question, data);
+                var data = await _db.Query(intent , enterPriseID);
+                return await _ai.GenerateAnswer(question, data , enterPriseID);
             case "chat":
-                var dataChat = await _ai.Chat(question);
-                return await _ai.GenerateAnswer(question, dataChat);
+                var dataChat = await _ai.Chat(question );
+                return await _ai.GenerateAnswer(question, dataChat, enterPriseID);
         }
         throw new Exception("Unsupported intent type");
 
