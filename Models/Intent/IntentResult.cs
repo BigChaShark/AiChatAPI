@@ -4,8 +4,15 @@ public class IntentResult
     public string IntentType { get; set; } = "";
     public string Table { get; set; } = "";
     public List<string> Fields { get; set; } = new();
-    public bool UseMemberId { get; set; }
-    public string? MemberIdField { get; set; }
+    public List<FilterCondition>? Filters { get; set; }
+    public string? CompareField { get; set; }   
+    public List<string>? CompareValues { get; set; }  
 
+}
+public class FilterCondition
+{
+    public string Field { get; set; } = "";
+    public string Operator { get; set; } = "="; // =, >, <, >=, <=, LIKE
+    public object? Value { get; set; }
 }
 

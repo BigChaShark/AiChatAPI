@@ -19,7 +19,7 @@ public class AiController : ControllerBase
     {
         try
         {
-            var result = await _rag.Ask(req.Question, req.MemberId);
+            var result = await _rag.Ask(req.Question, req.MemberId , req.enterPriseId);
             return Ok(new AiResponse
             {
                 Answer = result,

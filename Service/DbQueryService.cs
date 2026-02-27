@@ -1,84 +1,203 @@
 ﻿
 using AiChatAPI.Data;
+using AiChatAPI.Models;
 using AiChatAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Collections;
 
 public class DbQueryService
 {
-    private readonly AppDbContext _db;
+    private readonly APIAIContext _db;
 
-    public DbQueryService(AppDbContext db)
+    public DbQueryService(APIAIContext db)
     {
         _db = db;
     }
 
-    private static readonly Dictionary<string, Type> AllowedTables =
-    new()
+    private IQueryable GetQueryable(string tableName, int enterPriseID)
     {
-        { "Member", typeof(Member) },
-        { "Wallet", typeof(Wallet) },
-    };
+        // 1. ตรวจสอบสิทธิ์จาก AllTable
+        var allowedTables = _db.Set<AllTable>()
+            .Where(x => x.EnterPriseId == enterPriseID)
+            .Select(x => x.TableName)
+            .ToHashSet();
 
-    private IQueryable GetQueryable(string tableName)
-    {
-        if (!AllowedTables.TryGetValue(tableName, out var entityType))
-            throw new Exception($"Table '{tableName}' not supported");
+        if (!allowedTables.Contains(tableName))
+            throw new Exception($"Table '{tableName}' not allowed for this enterprise.");
+
+        // 2. หา entity type จาก EF model
+        var entityType = _db.Model.GetEntityTypes()
+            .FirstOrDefault(e => e.GetTableName() == tableName);
+
+        if (entityType == null)
+            throw new Exception($"Table '{tableName}' not found in DbContext.");
+
+        var clrType = entityType.ClrType;
 
         var method = typeof(DbContext)
             .GetMethod(nameof(DbContext.Set), Type.EmptyTypes)!
-            .MakeGenericMethod(entityType);
+            .MakeGenericMethod(clrType);
 
         return (IQueryable)method.Invoke(_db, null)!;
     }
 
-    public async Task<object> Query(IntentResult intent, long? memberId)
+    public async Task<object> Query(IntentResult intent, int enterPriseID)
     {
-        // 1. ดึง DbSet ตามชื่อ table
-        var queryable = GetQueryable(intent.Table);
-
-        // 2. Apply MemberId filter (ถ้ามี)
-        if (intent.UseMemberId && memberId.HasValue)
+        if (intent.IntentType == "chat")
+            return new { message = "No database query required." };
+        var queryable = GetQueryable(intent.Table, enterPriseID);
+        
+        // ===== APPLY DYNAMIC FILTERS =====
+        if (intent.Filters != null && intent.Filters.Any())
         {
-            if (string.IsNullOrEmpty(intent.MemberIdField))
-                throw new Exception("MemberIdField is required");
-
             var param = Expression.Parameter(queryable.ElementType, "x");
-            var prop = Expression.Property(param, intent.MemberIdField);
-            var body = Expression.Equal(
-                prop,
-                Expression.Constant(memberId.Value)
-            );
+            Expression? finalExpression = null;
 
-            var lambda = Expression.Lambda(body, param);
+            foreach (var filter in intent.Filters)
+            {
+                if (string.IsNullOrWhiteSpace(filter.Field))
+                    continue;
 
-            var whereMethod = typeof(Queryable)
-                .GetMethods()
-                .First(m => m.Name == "Where" && m.GetParameters().Length == 2)
-                .MakeGenericMethod(queryable.ElementType);
+                // Case-insensitive property search
+                var propInfo = queryable.ElementType
+                    .GetProperties()
+                    .FirstOrDefault(p =>
+                        p.Name.Equals(filter.Field, StringComparison.OrdinalIgnoreCase));
 
-            queryable = (IQueryable)whereMethod.Invoke(
-                null,
-                new object[] { queryable, lambda }
-            )!;
+                if (propInfo == null)
+                    continue;
+
+                var left = Expression.Property(param, propInfo);
+                Expression comparison;
+
+                var operatorUpper = filter.Operator?.ToUpper() ?? "=";
+
+                // ===== STRING TYPE =====
+                if (propInfo.PropertyType == typeof(string))
+                {
+                    var value = filter.Value?.ToString()?.Trim() ?? "";
+
+                    if (string.IsNullOrEmpty(value))
+                        continue;
+
+                    if (operatorUpper == "=")
+                        operatorUpper = "LIKE";
+
+                    var functions = Expression.Property(
+                        null,
+                        typeof(EF).GetProperty(nameof(EF.Functions))!
+                    );
+
+                    var likeMethod = typeof(DbFunctionsExtensions)
+                        .GetMethod(
+                            nameof(DbFunctionsExtensions.Like),
+                            new[] { typeof(DbFunctions), typeof(string), typeof(string) }
+                        )!;
+
+                    var toStringMethod = typeof(string)
+                        .GetMethod(nameof(string.ToString), Type.EmptyTypes)!;
+
+                    Expression leftString = left.Type != typeof(string)
+                        ? (Expression)Expression.Call(left, toStringMethod)
+                        : (Expression)left;
+
+                    var pattern = Expression.Constant($"%{value}%");
+
+                    comparison = Expression.Call(
+                        likeMethod,
+                        functions,
+                        leftString,
+                        pattern
+                    );
+                }
+                else
+                {
+                    // ===== NON STRING TYPE =====
+
+                    var targetType = Nullable.GetUnderlyingType(propInfo.PropertyType)
+                                     ?? propInfo.PropertyType;
+
+                    var convertedValue = Convert.ChangeType(filter.Value, targetType);
+                    var right = Expression.Constant(convertedValue);
+
+                    comparison = operatorUpper switch
+                    {
+                        "=" => Expression.Equal(left, right),
+                        ">" => Expression.GreaterThan(left, right),
+                        "<" => Expression.LessThan(left, right),
+                        ">=" => Expression.GreaterThanOrEqual(left, right),
+                        "<=" => Expression.LessThanOrEqual(left, right),
+                        _ => throw new Exception($"Operator '{filter.Operator}' not supported")
+                    };
+                }
+
+                finalExpression = finalExpression == null
+                    ? comparison
+                    : Expression.AndAlso(finalExpression, comparison);
+            }
+
+            if (finalExpression != null)
+            {
+                var lambda = Expression.Lambda(finalExpression, param);
+
+                var whereMethod = typeof(Queryable)
+                    .GetMethods()
+                    .First(m => m.Name == "Where" && m.GetParameters().Length == 2)
+                    .MakeGenericMethod(queryable.ElementType);
+
+                queryable = (IQueryable)whereMethod.Invoke(
+                    null,
+                    new object[] { queryable, lambda }
+                )!;
+            }
         }
+        Console.WriteLine("......................................"+queryable.ToQueryString());
 
-        // 3. Execute query
-        var list = await EntityFrameworkQueryableExtensions
-            .ToListAsync((dynamic)queryable);
+        // ===== EXECUTE QUERY =====
+        var toListAsyncMethod = typeof(EntityFrameworkQueryableExtensions)
+        .GetMethods()
+        .First(m =>
+            m.Name == "ToListAsync" &&
+            m.GetParameters().Length == 2) // source + cancellationToken
+        .MakeGenericMethod(queryable.ElementType);
 
-        // 4. Project fields
+            var task = (Task)toListAsyncMethod.Invoke(
+                null,
+                new object[] { queryable, CancellationToken.None }
+            )!;
+
+            await task;
+
+        var resultProperty = task.GetType().GetProperty("Result")!;
+        var list = (IEnumerable<object>)resultProperty.GetValue(task)!;
+
+        // ===== PROJECT FIELDS =====
         var result = new List<Dictionary<string, object?>>();
 
         foreach (var item in list)
         {
             var dict = new Dictionary<string, object?>();
 
-            foreach (var field in intent.Fields)
+            if (intent.Fields == null || !intent.Fields.Any())
             {
-                var prop = item.GetType().GetProperty(field);
-                if (prop != null)
-                    dict[field] = prop.GetValue(item);
+                // ถ้า AI ไม่เลือก fields  return ทั้ง row
+                foreach (var prop in item.GetType().GetProperties())
+                    dict[prop.Name] = prop.GetValue(item);
+            }
+            else
+            {
+                foreach (var field in intent.Fields)
+                {
+                    var prop = item.GetType()
+                        .GetProperties()
+                        .FirstOrDefault(p =>
+                            p.Name.Equals(field, StringComparison.OrdinalIgnoreCase));
+
+                    if (prop != null)
+                        dict[prop.Name] = prop.GetValue(item);
+                }
             }
 
             result.Add(dict);
