@@ -2,6 +2,7 @@
 using System.Text;
 using AiChatAPI.Data;
 using AiChatAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 public class AiService
@@ -17,88 +18,147 @@ public class AiService
         _db = db; 
     }
 
-    public async Task<IntentResult> AnalyzeIntent(string question, int enterPriseID)
+    public async Task<IntentResult> AnalyzeIntent(
+    string question,
+    int enterPriseID,
+    long? userID)
     {
         var schemaText = SchemaHelper.GetDatabaseSchema(_db, enterPriseID);
 
+        var history = await GetChatHistory(enterPriseID, userID);
+
         var prompt = $$"""
-        You are an AI that decides how to query a database.
+            You are an AI that decides how to query a database.
 
-        Available tables and fields:
-        {{schemaText}}
+            Available tables and fields:
+            {{schemaText}}
 
-        Your job:
-        - Decide which table is needed
-        - Decide which fields are relevant
-        - Detect if the question is comparison (cheaper, more expensive, higher, lower)
-        - Decide whether this is:
-            - chat
-            - query
-            - compare
+            Previous conversation:
+            {{history}}
 
-        Rules:
-        - If general talk → intentType = "chat"
-        - If asking for data → intentType = "query"
-        - If asking comparison between 2 or more items → intentType = "compare"
+            Current Question:
+            {{question}}
 
-        For compare:
-        - Provide table
-        - Provide compareField (like Price)
-        - Provide compareValues (list of item names)
+            Your job:
+            - Decide a question with previous conversation and database schema.
+            - Decide which table is needed
+            - Decide which fields are relevant
+            - Detect if the question is comparison (cheaper, more expensive, higher, lower)
+            - Detect if information is insufficient
+            - Decide intentType as one of:
+                - chat
+                - query
+                - compare
+                - clarify
 
-        Return JSON only:
+            IMPORTANT RULES:
+            - Always use Filters for selecting specific records.
+            - For compare, DO NOT use compareValues.
+            - For compare, use multiple filters (same field) to represent items.
+            - If required information is missing → intentType = "clarify"
+            - Always return valid JSON only. No explanation.
 
-        For query:
-        {
-          "table": "TableName",
-          "fields": ["Field1","Field2"],
-          "filters": [
+            For query:
             {
-              "field": "ColumnName",
-              "operator": "LIKE",
-              "value": "Value"
+              "intentType": "query",
+              "table": "TableName",
+              "fields": ["Field1","Field2"],
+              "filters": [
+                {
+                  "field": "ColumnName",
+                  "operator": "LIKE",
+                  "value": "Value"
+                }
+              ]
             }
-          ],
-          "intentType": "query"
-        }
 
-        For compare:
-        {
-          "table": "TableName",
-          "fields": ["FoodName","Price"],
-          "compareField": "Price",
-          "compareValues": ["ไก่ย่าง","ส้มตำ"],
-          "intentType": "compare"
-        }
+            For compare:
+            {
+              "intentType": "compare",
+              "table": "TableName",
+              "fields": ["Name","Price"],
+              "compareField": "Price",
+              "filters": [
+                {
+                  "field": "Name",
+                  "operator": "=",
+                  "value": "Item1"
+                },
+                {
+                  "field": "Name",
+                  "operator": "=",
+                  "value": "Item2"
+                }
+              ]
+            }
 
-        For chat:
-        {
-          "table": "",
-          "fields": [],
-          "filters": [],
-          "intentType": "chat"
-        }
+            For clarify:
+            {
+              "intentType": "clarify",
+              "clarifyQuestion": "Please specify more details."
+            }
 
-        Question:
-        {{question}}
-        """;
+            For chat:
+            {
+              "intentType": "chat",
+              "table": "",
+              "fields": [],
+              "filters": []
+            }
+            """;
 
         var response = await Send(prompt);
 
         if (string.IsNullOrWhiteSpace(response))
             throw new InvalidOperationException("AI response was null.");
 
-        var result = JsonConvert.DeserializeObject<IntentResult>(response);
+        IntentResult? result;
+
+        try
+        {
+            result = JsonConvert.DeserializeObject<IntentResult>(response);
+        }
+        catch (Exception ex)
+        {
+            throw new JsonSerializationException(
+                $"Failed to deserialize AI response: {response}", ex);
+        }
 
         if (result == null)
             throw new JsonSerializationException("Failed to deserialize.");
 
+        // Safe defaults
         result.Filters ??= new List<FilterCondition>();
         result.Fields ??= new List<string>();
         result.Table ??= "";
         result.IntentType ??= "chat";
 
+        // 🔥 Safety: ถ้า compare แต่ไม่มี CompareField → force clarify
+        if (result.IntentType == "compare" &&
+            string.IsNullOrEmpty(result.CompareField))
+        {
+            result.IntentType = "clarify";
+            result.ClarifyQuestion = "ไม่พบ field สำหรับเปรียบเทียบ กรุณาระบุให้ชัดเจนครับ";
+        }
+
         return result;
+    }
+
+    private async Task<string> GetChatHistory(int enterPriseID, long? userID)
+    {
+        var chats = await _db.ChatLogs
+            .Where(x => x.EnterPriseId == enterPriseID && x.UserId == userID.ToString())
+            .OrderByDescending(x => x.TimeStamp)
+            .Take(5)
+            .OrderBy(x => x.TimeStamp)
+            .ToListAsync();
+
+        if (!chats.Any())
+            return "No previous conversation.";
+
+        return string.Join("\n",
+            chats.Select(x => $"User: {x.Q}\nAI: {x.A}")
+        );
     }
 
     public async Task<string> GenerateAnswer(string question, object data , int enterPriseID)
@@ -124,6 +184,8 @@ public class AiService
         Have a natural conversation.
         Be polite and helpful.
         Do not mention databases or systems.
+        Do aswer only the question without extra explanation.
+        Answer only greetings question , if not a greetings question answer Like "sorry is out of hand".
 
         User:
         {{question}}

@@ -5,8 +5,10 @@ public class IntentResult
     public string Table { get; set; } = "";
     public List<string> Fields { get; set; } = new();
     public List<FilterCondition>? Filters { get; set; }
+
     public string? CompareField { get; set; }   
-    public List<string>? CompareValues { get; set; }  
+
+    public string? ClarifyQuestion { get; set; }
 
 }
 public class FilterCondition

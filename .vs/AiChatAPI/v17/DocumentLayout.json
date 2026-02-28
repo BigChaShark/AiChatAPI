@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Work\\AiChatAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\service\\ragservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:service\\ragservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\service\\aiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:service\\aiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\service\\ragservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:service\\ragservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\service\\dbqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -19,16 +19,16 @@
       "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:models\\intent\\intentresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\models\\apiaicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:models\\apiaicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\controllers\\aicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:controllers\\aicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\models\\requests\\airequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:models\\requests\\airequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\controllers\\aicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:controllers\\aicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -39,8 +39,8 @@
       "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:data\\schemahelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\models\\apiaicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:models\\apiaicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -58,7 +58,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,72 +66,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Work\\AiChatAPI\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "C:\\Work\\AiChatAPI\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-02-27T19:03:24.9Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AiRequest.cs",
-              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\Requests\\AiRequest.cs",
-              "RelativeDocumentMoniker": "Models\\Requests\\AiRequest.cs",
-              "ToolTip": "C:\\Work\\AiChatAPI\\Models\\Requests\\AiRequest.cs",
-              "RelativeToolTip": "Models\\Requests\\AiRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-18T15:07:19.467Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AiService.cs",
-              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Service\\AiService.cs",
-              "RelativeDocumentMoniker": "Service\\AiService.cs",
-              "ToolTip": "C:\\Work\\AiChatAPI\\Service\\AiService.cs",
-              "RelativeToolTip": "Service\\AiService.cs",
-              "ViewState": "AgIAAIwAAAAAAAAAAAAwwIYAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-19T11:12:54.029Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "RagService.cs",
-              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Service\\RagService.cs",
-              "RelativeDocumentMoniker": "Service\\RagService.cs",
-              "ToolTip": "C:\\Work\\AiChatAPI\\Service\\RagService.cs",
-              "RelativeToolTip": "Service\\RagService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-20T09:37:05.179Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IntentResult.cs",
-              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\Intent\\IntentResult.cs",
-              "RelativeDocumentMoniker": "Models\\Intent\\IntentResult.cs",
-              "ToolTip": "C:\\Work\\AiChatAPI\\Models\\Intent\\IntentResult.cs",
-              "RelativeToolTip": "Models\\Intent\\IntentResult.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-18T16:55:54.849Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "AiController.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Controllers\\AiController.cs",
               "RelativeDocumentMoniker": "Controllers\\AiController.cs",
@@ -144,7 +79,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 5,
               "Title": ".gitignore",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -163,14 +98,14 @@
               "RelativeDocumentMoniker": "Service\\DbQueryService.cs",
               "ToolTip": "C:\\Work\\AiChatAPI\\Service\\DbQueryService.cs",
               "RelativeToolTip": "Service\\DbQueryService.cs",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAwwKYAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-18T12:49:25.518Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "APIAIContext.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\APIAIContext.cs",
               "RelativeDocumentMoniker": "Models\\APIAIContext.cs",
@@ -178,8 +113,7 @@
               "RelativeToolTip": "Models\\APIAIContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-27T20:20:02.382Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-27T20:20:02.382Z"
             },
             {
               "$type": "Document",
@@ -189,9 +123,74 @@
               "RelativeDocumentMoniker": "Data\\SchemaHelper.cs",
               "ToolTip": "C:\\Work\\AiChatAPI\\Data\\SchemaHelper.cs",
               "RelativeToolTip": "Data\\SchemaHelper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-27T17:52:20.188Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RagService.cs",
+              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Service\\RagService.cs",
+              "RelativeDocumentMoniker": "Service\\RagService.cs",
+              "ToolTip": "C:\\Work\\AiChatAPI\\Service\\RagService.cs",
+              "RelativeToolTip": "Service\\RagService.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAowCAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-20T09:37:05.179Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AiService.cs",
+              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Service\\AiService.cs",
+              "RelativeDocumentMoniker": "Service\\AiService.cs",
+              "ToolTip": "C:\\Work\\AiChatAPI\\Service\\AiService.cs",
+              "RelativeToolTip": "Service\\AiService.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAzwGoAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-19T11:12:54.029Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IntentResult.cs",
+              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\Intent\\IntentResult.cs",
+              "RelativeDocumentMoniker": "Models\\Intent\\IntentResult.cs",
+              "ToolTip": "C:\\Work\\AiChatAPI\\Models\\Intent\\IntentResult.cs",
+              "RelativeToolTip": "Models\\Intent\\IntentResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T16:55:54.849Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AiRequest.cs",
+              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\Requests\\AiRequest.cs",
+              "RelativeDocumentMoniker": "Models\\Requests\\AiRequest.cs",
+              "ToolTip": "C:\\Work\\AiChatAPI\\Models\\Requests\\AiRequest.cs",
+              "RelativeToolTip": "Models\\Requests\\AiRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T15:07:19.467Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Work\\AiChatAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Work\\AiChatAPI\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-27T19:03:24.9Z",
               "EditorCaption": ""
             },
             {
@@ -204,8 +203,7 @@
               "RelativeToolTip": "Properties\\launchSettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-02-18T16:22:04.695Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-18T16:22:04.695Z"
             },
             {
               "$type": "Document",
@@ -217,8 +215,7 @@
               "RelativeToolTip": "Models\\Responses\\AiResponse.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-19T11:08:11.356Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-19T11:08:11.356Z"
             }
           ]
         }
