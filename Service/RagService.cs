@@ -7,12 +7,14 @@ public class RagService
     private readonly AiService _ai;
     private readonly DbQueryService _db;
     private readonly APIAIContext _dbContext;
+    private readonly Saveone saveoneContext;
 
-    public RagService(AiService ai, DbQueryService db, APIAIContext dbContext  )
+    public RagService(AiService ai, DbQueryService db, APIAIContext dbContext , Saveone saveone )
     {
         _ai = ai;
         _db = db;
         _dbContext = dbContext;
+        saveoneContext = saveone;
     }
 
     public async Task<string> Ask(

@@ -10,10 +10,12 @@ using System.Collections;
 public class DbQueryService
 {
     private readonly APIAIContext _db;
+    private readonly Saveone saveoneContext;
 
-    public DbQueryService(APIAIContext db)
+    public DbQueryService(APIAIContext db, Saveone saveoneContext)
     {
         _db = db;
+        this.saveoneContext = saveoneContext;
     }
 
     private IQueryable GetQueryable(string tableName, int enterPriseID)
@@ -346,5 +348,86 @@ public class DbQueryService
             all = list
         };
     }
+
+    #region SAVEONE
+    public async Task<object> QuerySaveone(string lineUser)
+    {
+        var foodCatIds = saveoneContext.FoodCategories.Select(f => f.FoodCategoryUseId).ToList();
+
+        var memberQuery = saveoneContext.SaveoneGoMembers
+            .Where(x => x.LineUserId == lineUser);
+
+        var robinsonMembers = (from m in saveoneContext.SaveoneGoMemberRobinsons
+                               join mem in memberQuery on m.MemberId equals mem.MemberId
+                               join f in saveoneContext.FoodCategories
+                                    on m.ShopType equals f.FoodCategoryUseId into fc
+                               from f in fc.DefaultIfEmpty()
+                               where m.Status >= 1 && m.SaveoneGoZoneMarketId == 3
+                               select new
+                               {
+                                   mem.UserName,
+                                   m.RankNo,
+                                   m.Score
+                               }).ToList();
+
+        var bkkFlea = (from m in saveoneContext.SaveoneGoMemberFleaMarkets
+                       join mem in memberQuery on m.MemberId equals mem.MemberId
+                       join st in saveoneContext.SaveoneGoFleaMarketShopTypes
+                            on m.FleaMarketShopTypeId equals st.Id into stj
+                       from st in stj.DefaultIfEmpty()
+                       select new
+                       {
+                           mem.UserName,
+                           m.RankNo,
+                           m.Score
+                       }).ToList();
+
+        var bkkStreetFood = (from m in saveoneContext.SaveoneGoMembers
+                             join mem in memberQuery on m.MemberId equals mem.MemberId
+                             join f in saveoneContext.FoodCategories
+                                  on m.IsFood equals f.FoodCategoryUseId into fc
+                             from f in fc.DefaultIfEmpty()
+                             where !string.IsNullOrEmpty(m.ShopName)
+                                   && foodCatIds.Contains(m.IsFood)
+                             select new
+                             {
+                                 mem.UserName,
+                                 m.RankNo,
+                                 m.Score
+                             }).ToList();
+
+        var bangNaStreetFood = (from m in saveoneContext.SaveoneGoMemberRobinsons
+                                join mem in memberQuery on m.MemberId equals mem.MemberId
+                                join f in saveoneContext.FoodCategories
+                                     on m.ShopType equals f.FoodCategoryUseId into fc
+                                from f in fc.DefaultIfEmpty()
+                                where m.Status >= 1 && m.SaveoneGoZoneMarketId == 5
+                                select new
+                                {
+                                    mem.UserName,
+                                    m.RankNo,
+                                    m.Score
+                                }).ToList();
+
+        var bangNaFle = (from m in saveoneContext.SaveoneGoMemberRobinsons
+                         join mem in memberQuery on m.MemberId equals mem.MemberId
+                         join f in saveoneContext.SaveoneGoFleaMarketShopTypes
+                              on m.ShopType equals f.Id into fc
+                         from f in fc.DefaultIfEmpty()
+                         where m.Status >= 1 && m.SaveoneGoZoneMarketId == 6
+                         select new
+                         {
+                             mem.UserName,
+                             m.RankNo,
+                             m.Score
+                         }).ToList();
+
+        var data = robinsonMembers.Concat(bkkFlea).Concat(bkkStreetFood).Concat(bangNaStreetFood).Concat(bangNaFle);
+
+        return data;
+    }
+    #endregion
+
+
 }
 

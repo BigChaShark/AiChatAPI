@@ -36,5 +36,28 @@ public class AiController : ControllerBase
         }
 
     }
+
+    [HttpPost("saveone/ask")]
+    public async Task<IActionResult> SaveOneAsk(AiRequest req)
+    {
+        try
+        {
+            var result = await _rag.Ask(req.Question, req.MemberId, req.enterPriseId);
+            return Ok(new AiResponse
+            {
+                Answer = result,
+                Success = true
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new AiResponse
+            {
+                Answer = ex.Message,
+                Success = false
+            });
+        }
+
+    }
 }
 

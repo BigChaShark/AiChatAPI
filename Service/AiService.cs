@@ -9,13 +9,15 @@ public class AiService
 {
     private readonly HttpClient _http;
     private readonly IConfiguration _config;
-    private readonly APIAIContext _db; // Add this field to fix the error
+    private readonly APIAIContext _db;
+    private readonly Saveone saveoneContext;
 
-    public AiService(HttpClient http, IConfiguration config, APIAIContext db)
+    public AiService(HttpClient http, IConfiguration config, APIAIContext db, Saveone saveone)
     {
         _http = http;
         _config = config;
-        _db = db; 
+        _db = db;
+        this.saveoneContext = saveone;
     }
 
     public async Task<IntentResult> AnalyzeIntent(
@@ -23,11 +25,108 @@ public class AiService
     int enterPriseID,
     long? userID)
     {
-        var schemaText = SchemaHelper.GetDatabaseSchema(_db, enterPriseID);
+
+        string schemaText = "";
+        if (enterPriseID == 5)
+        {
+            schemaText = SchemaHelper.GetDatabaseSchemaSaveone(saveoneContext, enterPriseID);
+        }
+        else
+        {
+            schemaText = SchemaHelper.GetDatabaseSchema(_db, enterPriseID);
+        }
 
         var history = await GetChatHistory(enterPriseID, userID);
+        string prompt = "";
 
-        var prompt = $$"""
+        if (enterPriseID == 5)
+        {
+            #region Saveone Prompt
+            prompt = $$"""
+            You are an AI that decides how to Answer the Question form customer.
+
+            Data:
+            {{schemaText}}
+
+            Previous conversation:
+            {{history}}
+
+            Current Question:
+            {{question}}
+
+            Your job:
+            - Decide a question with previous conversation and database schema.
+            - Decide which table is needed
+            - Decide which fields are relevant
+            - Detect if the question is comparison (cheaper, more expensive, higher, lower)
+            - Detect if information is insufficient
+            - Decide intentType as one of:
+                - chat
+                - query
+                - compare
+                - clarify
+
+            IMPORTANT RULES:
+            - Always use Filters for selecting specific records.
+            - For compare, DO NOT use compareValues.
+            - For compare, use multiple filters (same field) to represent items.
+            - If required information is missing → intentType = "clarify"
+            - Always return valid JSON only. No explanation.
+
+            For query:
+            {
+              "intentType": "query",
+              "table": "TableName",
+              "fields": ["Field1","Field2"],
+              "filters": [
+                {
+                  "field": "ColumnName",
+                  "operator": "LIKE",
+                  "value": "Value"
+                }
+              ]
+            }
+
+            For compare:
+            {
+              "intentType": "compare",
+              "table": "TableName",
+              "fields": ["Name","Price"],
+              "compareField": "Price",
+              "filters": [
+                {
+                  "field": "Name",
+                  "operator": "=",
+                  "value": "Item1"
+                },
+                {
+                  "field": "Name",
+                  "operator": "=",
+                  "value": "Item2"
+                }
+              ]
+            }
+
+            For clarify:
+            {
+              "intentType": "clarify",
+              "clarifyQuestion": "Please specify more details."
+            }
+
+            For chat:
+            {
+              "intentType": "chat",
+              "table": "",
+              "fields": [],
+              "filters": []
+            }
+            """;
+            #endregion
+        }
+        else
+        {
+            #region DF Prompt
+            prompt = $$"""
             You are an AI that decides how to query a database.
 
             Available tables and fields:
@@ -106,6 +205,8 @@ public class AiService
               "filters": []
             }
             """;
+            #endregion
+        }
 
         var response = await Send(prompt);
 

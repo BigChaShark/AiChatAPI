@@ -31,4 +31,23 @@ public static class SchemaHelper
 
         return sb.ToString();
     }
+
+    public static string GetDatabaseSchemaSaveone(DbContext db, int enterpriseId)
+    {
+        var sb = new StringBuilder();
+
+        // 1️⃣ ดึงรายชื่อ table ที่อนุญาตจาก DB
+        // 2️⃣ วนเฉพาะ entity ที่อยู่ใน allowedTables
+        foreach (var entity in db.Model.GetEntityTypes())
+        {
+            var tableName = entity.GetTableName();
+
+            var columns = entity.GetProperties()
+                .Select(p => $"{p.Name} ({p.ClrType.Name})");
+
+            sb.AppendLine($"{tableName}({string.Join(", ", columns)})");
+        }
+
+        return sb.ToString();
+    }
 }
