@@ -10,9 +10,9 @@ public class SaveoneMarketData
     public string MarketName { get; set; } = "";
     public  int Rank { get; set; }
     public decimal Score { get; set; }
-    public int Star { get; set; }
-    public TimeOnly ReservationTimeStart { get; set; }
-    public TimeOnly ReservationTimeEnd { get; set; }
+    public string Star { get; set; }
+    public string ReservationTimeStart { get; set; }
+    public string ReservationTimeEnd { get; set; }
 
 }
 

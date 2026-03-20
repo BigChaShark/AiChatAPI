@@ -3,24 +3,20 @@
   "WorkspaceRootPath": "C:\\Work\\AiChatAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\controllers\\aicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:controllers\\aicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\service\\aiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:service\\aiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\service\\dbqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:service\\dbqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\models\\saveonedata\\saveoneinfodata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:models\\saveonedata\\saveoneinfodata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\models\\intent\\intentresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:models\\intent\\intentresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\service\\ragservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:service\\ragservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\models\\saveone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:models\\saveone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|c:\\work\\aichatapi\\service\\dbqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A08152-86C6-4950-B52D-8B4190433ADF}|AiChatAPI.csproj|solutionrelative:service\\dbqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,24 +26,41 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AiController.cs",
-              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Controllers\\AiController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AiController.cs",
-              "ToolTip": "C:\\Work\\AiChatAPI\\Controllers\\AiController.cs",
-              "RelativeToolTip": "Controllers\\AiController.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAkwCwAAAAnAAAAAAAAAA==",
+              "Title": "AiService.cs",
+              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Service\\AiService.cs",
+              "RelativeDocumentMoniker": "Service\\AiService.cs",
+              "ToolTip": "C:\\Work\\AiChatAPI\\Service\\AiService.cs",
+              "RelativeToolTip": "Service\\AiService.cs",
+              "ViewState": "AgIAAP0AAAAAAAAAAAAiwCIBAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T17:33:06.255Z",
+              "WhenOpened": "2026-03-20T10:36:47.533Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
+              "Title": "DbQueryService.cs",
+              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Service\\DbQueryService.cs",
+              "RelativeDocumentMoniker": "Service\\DbQueryService.cs",
+              "ToolTip": "C:\\Work\\AiChatAPI\\Service\\DbQueryService.cs",
+              "RelativeToolTip": "Service\\DbQueryService.cs",
+              "ViewState": "AgIAAOsBAAAAAAAAAAAcwMkBAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-20T10:32:54.371Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Saveone.cs",
               "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\Saveone.cs",
               "RelativeDocumentMoniker": "Models\\Saveone.cs",
@@ -55,50 +68,20 @@
               "RelativeToolTip": "Models\\Saveone.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T17:21:32.062Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IntentResult.cs",
-              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\Intent\\IntentResult.cs",
-              "RelativeDocumentMoniker": "Models\\Intent\\IntentResult.cs",
-              "ToolTip": "C:\\Work\\AiChatAPI\\Models\\Intent\\IntentResult.cs",
-              "RelativeToolTip": "Models\\Intent\\IntentResult.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAA9wAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T17:02:21.52Z",
+              "WhenOpened": "2026-03-20T10:32:48.171Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "DbQueryService.cs",
-              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Service\\DbQueryService.cs",
-              "RelativeDocumentMoniker": "Service\\DbQueryService.cs",
-              "ToolTip": "C:\\Work\\AiChatAPI\\Service\\DbQueryService.cs",
-              "RelativeToolTip": "Service\\DbQueryService.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAgwKoBAAAUAAAAAAAAAA==",
+              "Title": "RagService.cs",
+              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Service\\RagService.cs",
+              "RelativeDocumentMoniker": "Service\\RagService.cs",
+              "ToolTip": "C:\\Work\\AiChatAPI\\Service\\RagService.cs",
+              "RelativeToolTip": "Service\\RagService.cs",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAswIwAAABlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T16:59:21.249Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SaveoneInfoData.cs",
-              "DocumentMoniker": "C:\\Work\\AiChatAPI\\Models\\SaveoneData\\SaveoneInfoData.cs",
-              "RelativeDocumentMoniker": "Models\\SaveoneData\\SaveoneInfoData.cs",
-              "ToolTip": "C:\\Work\\AiChatAPI\\Models\\SaveoneData\\SaveoneInfoData.cs",
-              "RelativeToolTip": "Models\\SaveoneData\\SaveoneInfoData.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T16:55:07.775Z",
+              "WhenOpened": "2026-03-20T10:30:53.93Z",
               "EditorCaption": ""
             }
           ]

@@ -1,5 +1,6 @@
 ﻿
 using AiChatAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 public class RagService
@@ -19,17 +20,17 @@ public class RagService
 
     public async Task<string> Ask(
     string question,
-    long? memberId,
+    string userID,
     int enterPriseID)
     {
-        if (memberId == null)
+        if (userID == null)
             throw new Exception("User not authenticated.");
 
         // ===== 1. วิเคราะห์ Intent =====
         var intent = await _ai.AnalyzeIntent(
             question,
             enterPriseID,
-            memberId.Value);
+            userID);
 
         string finalAnswer;
 
@@ -62,7 +63,7 @@ public class RagService
         _dbContext.ChatLogs.Add(new ChatLog
         {
             EnterPriseId = enterPriseID,
-            UserId = memberId.Value.ToString(),
+            UserId = userID.ToString(),
             Q = question,
             A = finalAnswer,
             TimeStamp = DateTime.Now
@@ -71,6 +72,81 @@ public class RagService
         await _dbContext.SaveChangesAsync();
 
         return finalAnswer;
+    }
+
+    public async Task<string> SaveoneAsk(
+    string question,
+    string userID,
+    int enterPriseID)
+    {  
+        if (userID == null)
+            throw new Exception("User not authenticated.");
+
+        // ===== 1. วิเคราะห์ Intent =====
+        var intent = await _ai.AnalyzeIntentSaveone(
+            question,
+            enterPriseID,
+            userID);
+
+        string finalAnswer;
+
+        switch (intent.IntentType?.ToLower())
+        {
+
+            case "query":
+                var data = _db.QuerySaveone(userID);
+                finalAnswer = await _ai.GenerateAnswer(question, data, enterPriseID);
+                break;
+
+            case "chat":
+                var chatData = await _ai.Chat(question);
+                finalAnswer = await _ai.GenerateAnswer(question, chatData, enterPriseID);
+                break;
+
+            case "topup":
+                finalAnswer = $"QR Code -----.....-/// {intent.Amount} ///-......------";
+                break;
+            case "topup_clarify":
+                var clarify = "กรุณา ระบุยอดเงิน หรือ ระบุให้ชัดเจนกว่านี้ครับ";
+                finalAnswer = await _ai.GenerateAnswer(question, clarify, enterPriseID);
+                break;
+
+            default:
+                throw new Exception("Unsupported intent type");
+        }
+
+        // ===== 2. Save Chat Log =====
+        _dbContext.ChatLogs.Add(new ChatLog
+        {
+            EnterPriseId = enterPriseID,
+            UserId = userID.ToString(),
+            Q = question,
+            A = finalAnswer,
+            TimeStamp = DateTime.Now
+        });
+
+        await _dbContext.SaveChangesAsync();
+
+        return finalAnswer;
+    }
+
+    public SaveoneCheckPMData CheckTopup(string ref1, string ref2, decimal amount, int enterpriseID, string userID)
+    {
+        var checkResult = saveoneContext.ScbPaymentConfirmations
+            .Where(c => c.BillPaymentRef1 == ref1 && c.ConfirmId == ref2 && c.Amount == amount)
+            .FirstOrDefault();
+        if (checkResult == null) return new SaveoneCheckPMData { Mes = "ไม่พบข้อมูลการชำระเงิน", Amount = 0, Balance = 0, isTopupSuccess = false };
+        if (checkResult.Status == 1)
+        {
+            var member = saveoneContext.SaveoneGoMembers.FirstOrDefault(x => x.LineUserId == userID);
+            if (member == null) return new SaveoneCheckPMData { Mes = "ไม่พบข้อมูลสมาชิก", Amount = 0, Balance = 0, isTopupSuccess = false };
+            var balance = saveoneContext.Sgsavings.Where(x => x.MemberId == member.MemberId).Select(s => s.BalanceAmount).FirstOrDefault();
+            return new SaveoneCheckPMData { Mes = "เติมเงินสำเร็จ", Amount = amount, Balance = balance.Value, isTopupSuccess = true };
+        }
+        else
+        {
+            return new SaveoneCheckPMData { Mes = "การชำระเงินยังไม่ถูกยืนยัน", Amount = amount, Balance = 0, isTopupSuccess = false };
+        }
     }
 }
 

@@ -36,4 +36,6 @@ public partial class SaveoneGoMemberRobinson
     public DateTime? LastUpdate { get; set; }
 
     public long? LastUpdateBy { get; set; }
+
+    public virtual Member? Member { get; set; }
 }

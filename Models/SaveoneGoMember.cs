@@ -77,5 +77,7 @@ public partial class SaveoneGoMember
 
     public long? LastUpdateBy { get; set; }
 
+    public virtual Member? Member { get; set; }
+
     public virtual ICollection<SaveoneGoMemberFleaMarket> SaveoneGoMemberFleaMarkets { get; set; } = new List<SaveoneGoMemberFleaMarket>();
 }

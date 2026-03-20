@@ -19,7 +19,7 @@ public class AiController : ControllerBase
     {
         try
         {
-            var result = await _rag.Ask(req.Question, req.MemberId , req.enterPriseId);
+            var result = await _rag.Ask(req.Question, req.UserID , req.enterPriseId);
             return Ok(new AiResponse
             {
                 Answer = result,
@@ -42,7 +42,7 @@ public class AiController : ControllerBase
     {
         try
         {
-            var result = await _rag.Ask(req.Question, req.MemberId, req.enterPriseId);
+            var result = await _rag.SaveoneAsk(req.Question, req.UserID, req.enterPriseId);
             return Ok(new AiResponse
             {
                 Answer = result,
@@ -54,6 +54,32 @@ public class AiController : ControllerBase
             return StatusCode(500, new AiResponse
             {
                 Answer = ex.Message,
+                Success = false
+            });
+        }
+
+    }
+
+    [HttpPost("saveone/checkpayment")]
+    public async Task<IActionResult> SaveOneCheckPayment(SaveoneCheckPRQ req)
+    {
+        try
+        {
+            var result = _rag.CheckTopup(req.Ref1 , req.Ref2 , req.Amount , req.enterPriseId , req.UserID);
+            return Ok(new SaveoneCheckPMRes
+            {
+                Message = result.Mes,
+                Amount = result.Amount,
+                Balance = result.Balance,
+                Success = true,
+                isTopupSuccess = result.isTopupSuccess
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new SaveoneCheckPMRes
+            {
+                Message = ex.Message,
                 Success = false
             });
         }

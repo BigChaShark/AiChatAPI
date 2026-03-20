@@ -17,7 +17,13 @@ builder.Services.AddScoped<DbQueryService>();
 
 builder.Services.AddDbContext<APIAIContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<Saveone>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("SaveOneConnection")));
 var app = builder.Build();
+
+
 
 
 

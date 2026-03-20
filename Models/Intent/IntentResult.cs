@@ -6,6 +6,7 @@ public class IntentResult
     public List<string> Fields { get; set; } = new();
     public List<FilterCondition>? Filters { get; set; }
 
+    public string Amount { get; set; }
     public string? CompareField { get; set; }   
 
     public string? ClarifyQuestion { get; set; }

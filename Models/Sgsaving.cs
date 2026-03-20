@@ -3,13 +3,11 @@ using System.Collections.Generic;
 
 namespace AiChatAPI.Models;
 
-public partial class Musaving
+public partial class Sgsaving
 {
     public long Seq { get; set; }
 
     public long MemberId { get; set; }
 
     public decimal? BalanceAmount { get; set; }
-
-    public virtual Member Member { get; set; } = null!;
 }

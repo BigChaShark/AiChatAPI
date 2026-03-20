@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Collections;
+using Newtonsoft.Json;
+using System.Linq;
 
 public class DbQueryService
 {
@@ -350,81 +352,170 @@ public class DbQueryService
     }
 
     #region SAVEONE
-    public async Task<object> QuerySaveone(string lineUser)
+    public string QuerySaveone(string lineUser)
     {
-        var foodCatIds = saveoneContext.FoodCategories.Select(f => f.FoodCategoryUseId).ToList();
+        var member = saveoneContext.SaveoneGoMembers
+            .FirstOrDefault(x => x.LineUserId == lineUser);
+        var memMain = saveoneContext.Members.FirstOrDefault(x => x.Id == member.MemberId);
 
-        var memberQuery = saveoneContext.SaveoneGoMembers
-            .Where(x => x.LineUserId == lineUser);
+        if (member == null)
+            return JsonConvert.SerializeObject(null);
 
-        var robinsonMembers = (from m in saveoneContext.SaveoneGoMemberRobinsons
-                               join mem in memberQuery on m.MemberId equals mem.MemberId
-                               join f in saveoneContext.FoodCategories
-                                    on m.ShopType equals f.FoodCategoryUseId into fc
-                               from f in fc.DefaultIfEmpty()
-                               where m.Status >= 1 && m.SaveoneGoZoneMarketId == 3
-                               select new
-                               {
-                                   mem.UserName,
-                                   m.RankNo,
-                                   m.Score
-                               }).ToList();
+        // -------------------------------
+        // 1. โหลด FoodCategory (กัน OPENJSON)
+        // -------------------------------
+        var foodCatIds = saveoneContext.FoodCategories
+            .Select(f => f.FoodCategoryUseId)
+            .ToList();
 
-        var bkkFlea = (from m in saveoneContext.SaveoneGoMemberFleaMarkets
-                       join mem in memberQuery on m.MemberId equals mem.MemberId
-                       join st in saveoneContext.SaveoneGoFleaMarketShopTypes
-                            on m.FleaMarketShopTypeId equals st.Id into stj
-                       from st in stj.DefaultIfEmpty()
-                       select new
-                       {
-                           mem.UserName,
-                           m.RankNo,
-                           m.Score
-                       }).ToList();
+        // -------------------------------
+        // 2. รวม Market ทั้งหมด
+        // -------------------------------
+        var allMarkets = new List<dynamic>();
 
-        var bkkStreetFood = (from m in saveoneContext.SaveoneGoMembers
-                             join mem in memberQuery on m.MemberId equals mem.MemberId
-                             join f in saveoneContext.FoodCategories
-                                  on m.IsFood equals f.FoodCategoryUseId into fc
-                             from f in fc.DefaultIfEmpty()
-                             where !string.IsNullOrEmpty(m.ShopName)
-                                   && foodCatIds.Contains(m.IsFood)
-                             select new
-                             {
-                                 mem.UserName,
-                                 m.RankNo,
-                                 m.Score
-                             }).ToList();
+        // Robinson (Zone 3)
+        allMarkets.AddRange(
+            saveoneContext.SaveoneGoMemberRobinsons
+                .AsEnumerable()
+                .Where(m => m.Status >= 1
+                    && m.SaveoneGoZoneMarketId == 3
+                    && m.MemberId == member.MemberId
+                    && foodCatIds.Contains(m.ShopType))
+                .Select(m => new
+                {
+                    ZoneID = m.SaveoneGoZoneMarketId,
+                    RankNo = m.RankNo,
+                    Score = m.Score
+                }).ToList()
+        );
 
-        var bangNaStreetFood = (from m in saveoneContext.SaveoneGoMemberRobinsons
-                                join mem in memberQuery on m.MemberId equals mem.MemberId
-                                join f in saveoneContext.FoodCategories
-                                     on m.ShopType equals f.FoodCategoryUseId into fc
-                                from f in fc.DefaultIfEmpty()
-                                where m.Status >= 1 && m.SaveoneGoZoneMarketId == 5
-                                select new
-                                {
-                                    mem.UserName,
-                                    m.RankNo,
-                                    m.Score
-                                }).ToList();
+        // Flea Market
+        allMarkets.AddRange(
+            saveoneContext.SaveoneGoMemberFleaMarkets
+                .Where(m => m.MemberId == member.MemberId)
+                .Select(m => new
+                {
+                    ZoneID = m.ZoneId,
+                    RankNo = m.RankNo,
+                    Score = m.Score
+                }).ToList()
+        );
 
-        var bangNaFle = (from m in saveoneContext.SaveoneGoMemberRobinsons
-                         join mem in memberQuery on m.MemberId equals mem.MemberId
-                         join f in saveoneContext.SaveoneGoFleaMarketShopTypes
-                              on m.ShopType equals f.Id into fc
-                         from f in fc.DefaultIfEmpty()
-                         where m.Status >= 1 && m.SaveoneGoZoneMarketId == 6
-                         select new
-                         {
-                             mem.UserName,
-                             m.RankNo,
-                             m.Score
-                         }).ToList();
+        // BKK Street Food
+        allMarkets.AddRange(
+            saveoneContext.SaveoneGoMembers
+                .AsEnumerable()
+                .Where(m => !string.IsNullOrEmpty(m.ShopName)
+                    && foodCatIds.Contains(m.IsFood)
+                    && m.MemberId == member.MemberId)
+                .Select(m => new
+                {
+                    ZoneID = 1,
+                    RankNo = m.RankNo,
+                    Score = m.Score
+                }).ToList()
+        );
 
-        var data = robinsonMembers.Concat(bkkFlea).Concat(bkkStreetFood).Concat(bangNaStreetFood).Concat(bangNaFle);
+        // Bangna Street Food (Zone 5)
+        allMarkets.AddRange(
+            saveoneContext.SaveoneGoMemberRobinsons
+                .Where(m => m.Status >= 1
+                    && m.SaveoneGoZoneMarketId == 5
+                    && m.MemberId == member.MemberId)
+                .Select(m => new
+                {
+                    ZoneID = m.SaveoneGoZoneMarketId,
+                    RankNo = m.RankNo,
+                    Score = m.Score
+                }).ToList()
+        );
 
-        return data;
+        // Bangna Flea (Zone 6)
+        allMarkets.AddRange(
+            saveoneContext.SaveoneGoMemberRobinsons
+                .Where(m => m.Status >= 1
+                    && m.SaveoneGoZoneMarketId == 6
+                    && m.MemberId == member.MemberId)
+                .Select(m => new
+                {
+                    ZoneID = m.SaveoneGoZoneMarketId,
+                    RankNo = m.RankNo,
+                    Score = m.Score
+                }).ToList()
+        );
+
+        // -------------------------------
+        // 3. Wallet
+        // -------------------------------
+        var wallet = saveoneContext.Sgsavings
+            .Where(x => x.MemberId == member.MemberId)
+            .Select(x => x.BalanceAmount)
+            .FirstOrDefault();
+
+        // -------------------------------
+        // 4. โหลด Master Data (กัน OPENJSON)
+        // -------------------------------
+        var zoneIds = allMarkets
+            .Select(x => (int)x.ZoneID)
+            .Distinct()
+            .ToList();
+
+        var zoneMarkets = saveoneContext.SaveoneGoZoneMarkets
+            .AsEnumerable() // 🔥 กัน OPENJSON
+            .Where(z => zoneIds.Contains(z.Id))
+            .ToList();
+
+        var rankings = saveoneContext.SaveoneGoRankings
+            .AsEnumerable() // 🔥 กัน OPENJSON
+            .Where(r => r.SaveoneGoZoneMarketId.HasValue
+                && zoneIds.Contains(r.SaveoneGoZoneMarketId.Value))
+            .ToList();
+
+        // -------------------------------
+        // 5. Map ลง Model
+        // -------------------------------
+        var marketData = allMarkets
+            .AsEnumerable()
+            .Select(m =>
+            {
+                var zone = zoneMarkets
+                    .FirstOrDefault(z => z.Id == m.ZoneID);
+
+                var rank = rankings
+                    .FirstOrDefault(r =>
+                        r.SaveoneGoZoneMarketId == m.ZoneID &&
+                        m.RankNo >= r.RankingStart &&
+                        m.RankNo <= r.RankingEnd);
+
+                return new SaveoneMarketData
+                {
+                    MarketName = zone?.Name ?? "",
+                    Rank = m.RankNo,
+                    Score = m.Score,
+
+                    // ⭐ แปลง RankName → int
+                    Star = rank?.RankName,
+
+                    // 🕒 เวลา
+                    ReservationTimeStart = rank?.TimeStart?.ToString("HH:mm") ?? "",
+                    ReservationTimeEnd = rank?.TimeEnd?.ToString("HH:mm") ?? ""
+                };
+            })
+            .ToList();
+
+        // -------------------------------
+        // 6. Final Result
+        // -------------------------------
+        var result = new SaveoneInfoData
+        {
+            Name = memMain.Name ?? member.BankName,
+            WalletBalance = wallet ?? 0,
+            MarketData = marketData
+        };
+
+        Debug.WriteLine("Saveone Result: " + JsonConvert.SerializeObject(result));
+
+        return JsonConvert.SerializeObject(result);
     }
     #endregion
 
