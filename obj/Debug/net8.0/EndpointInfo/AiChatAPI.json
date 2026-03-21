@@ -152,8 +152,8 @@
             "nullable": true
           },
           "enterPriseId": {
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

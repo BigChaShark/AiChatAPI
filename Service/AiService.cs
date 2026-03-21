@@ -24,7 +24,7 @@ public class AiService
 
     public async Task<IntentResult> AnalyzeIntent(
     string question,
-    int enterPriseID,
+    string enterPriseID,
     string userID)
     {
         string schemaText = "";
@@ -151,7 +151,7 @@ public class AiService
 
     public async Task<IntentResult> AnalyzeIntentSaveone(
     string question,
-    int enterPriseID,
+    string enterPriseID,
     string userID)
     {
         string data = "";
@@ -264,49 +264,62 @@ public class AiService
         return result;
     }
 
-    private async Task<string> GetChatHistory(int enterPriseID, string userID)
+    private async Task<string> GetChatHistory(string enterPriseID, string userID)
     {
-        var chats = await _db.ChatLogs
-            .Where(x => x.EnterPriseId == enterPriseID && x.UserId == userID)
-            .OrderByDescending(x => x.TimeStamp)
-            .Take(5)
-            .OrderBy(x => x.TimeStamp)
-            .ToListAsync();
+        //var chats = await _db.ChatLogs
+        //    .Where(x => x.EnterPriseId == enterPriseID && x.UserId == userID)
+        //    .OrderByDescending(x => x.TimeStamp)
+        //    .Take(5)
+        //    .OrderBy(x => x.TimeStamp)
+        //    .ToListAsync();
 
-        if (!chats.Any())
-            return "No previous conversation.";
+        //if (!chats.Any())
+        //    return "No previous conversation.";
 
-        return string.Join("\n",
-            chats.Select(x => $"User: {x.Q}\nAI: {x.A}")
-        );
+        //return string.Join("\n",
+        //    chats.Select(x => $"User: {x.Q}\nAI: {x.A}")
+        //);
+        return "";
     }
 
-    public async Task<string> GenerateAnswer(string question, object data, int enterPriseID)
+    public async Task<string> GenerateAnswer(string question, object data, string enterPriseID)
     {
         var prompt = $"""
             You are a helpful assistant.
 
             Your task:
-            - Answer the question using the provided data.
-            - Use simple Thai language.
-            - Make the answer VERY easy to read.
+            - Understand the user's question
+            - Decide how to answer based on the data
+
+            Rules:
+            1. If the question is casual (greeting, small talk, general conversation)
+               → Reply naturally in Thai
+               → Do NOT use the data
+               → Keep it short and friendly
+
+            2. If the question is asking about user data or system data
+               → Use the provided data to answer
+               → Convert data into simple, human-friendly Thai
+               → Follow the format below
 
             Format rules (IMPORTANT):
-            - Do NOT use markdown symbols like **, ##, | tables
-            - Do NOT use code blocks
             - Use plain text only
+            - Do NOT use markdown symbols like **, ##, |
+            - Do NOT use code blocks
             - Use short sentences
-            - Use line breaks between sections
+            - Add line breaks for readability
             - Use simple bullet points like:
               - ข้อความ
-            - Avoid technical field names (like ReservationTimeStart)
-            - Convert data into human-friendly words
+            - Avoid technical field names
+            - Make it VERY easy to read
 
             Style:
-            - Friendly and natural
-            - Like explaining to a normal user (not developer)
+            - Friendly
+            - Natural
+            - Easy to understand
+            - Not technical
 
-            Example style:
+            Example when answering with data:
 
             ข้อมูลของคุณ
             - เบอร์โทร: 094xxxxxxx
@@ -321,12 +334,19 @@ public class AiService
                - ระดับ: 2 ดาว
                - เวลาเปิดจอง: 10:30 - 15:00
 
+
+            Important:
+            - If data is empty or not useful → answer like normal conversation
+            - Do NOT mention JSON or field names
+            - Do NOT say "from the data"
+            - Always make it clean and readable
+
             Question:
             {question}
 
-        Data:
-        {JsonConvert.SerializeObject(data)}
-        """;
+            Data:
+            {JsonConvert.SerializeObject(data)}
+            """;
 
         return await Send(prompt);
     }

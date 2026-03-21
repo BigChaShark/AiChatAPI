@@ -21,7 +21,7 @@ public class RagService
     public async Task<string> Ask(
     string question,
     string userID,
-    int enterPriseID)
+    string enterPriseID)
     {
         if (userID == null)
             throw new Exception("User not authenticated.");
@@ -60,16 +60,16 @@ public class RagService
         }
 
         // ===== 2. Save Chat Log =====
-        _dbContext.ChatLogs.Add(new ChatLog
-        {
-            EnterPriseId = enterPriseID,
-            UserId = userID.ToString(),
-            Q = question,
-            A = finalAnswer,
-            TimeStamp = DateTime.Now
-        });
+        //_dbContext.ChatLogs.Add(new ChatLog
+        //{
+        //    EnterPriseId = enterPriseID,
+        //    UserId = userID.ToString(),
+        //    Q = question,
+        //    A = finalAnswer,
+        //    TimeStamp = DateTime.Now
+        //});
 
-        await _dbContext.SaveChangesAsync();
+        //await _dbContext.SaveChangesAsync();
 
         return finalAnswer;
     }
@@ -77,7 +77,7 @@ public class RagService
     public async Task<string> SaveoneAsk(
     string question,
     string userID,
-    int enterPriseID)
+    string enterPriseID)
     {  
         if (userID == null)
             throw new Exception("User not authenticated.");
@@ -116,24 +116,24 @@ public class RagService
         }
 
         // ===== 2. Save Chat Log =====
-        _dbContext.ChatLogs.Add(new ChatLog
-        {
-            EnterPriseId = enterPriseID,
-            UserId = userID.ToString(),
-            Q = question,
-            A = finalAnswer,
-            TimeStamp = DateTime.Now
-        });
+        //_dbContext.ChatLogs.Add(new ChatLog
+        //{
+        //    EnterPriseId = enterPriseID,
+        //    UserId = userID.ToString(),
+        //    Q = question,
+        //    A = finalAnswer,
+        //    TimeStamp = DateTime.Now
+        //});
 
-        await _dbContext.SaveChangesAsync();
+        //await _dbContext.SaveChangesAsync();
 
         return finalAnswer;
     }
 
-    public SaveoneCheckPMData CheckTopup(string ref1, string ref2, decimal amount, int enterpriseID, string userID)
+    public SaveoneCheckPMData CheckTopup(string ref1, string ref2, decimal amount, string enterpriseID, string userID)
     {
         var checkResult = saveoneContext.ScbPaymentConfirmations
-            .Where(c => c.BillPaymentRef1 == ref1 && c.ConfirmId == ref2 && c.Amount == amount)
+            .Where(c => c.BillPaymentRef1 == ref1 && c.Amount == amount)
             .FirstOrDefault();
         if (checkResult == null) return new SaveoneCheckPMData { Mes = "ไม่พบข้อมูลการชำระเงิน", Amount = 0, Balance = 0, isTopupSuccess = false };
         if (checkResult.Status == 1)

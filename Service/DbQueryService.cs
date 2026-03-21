@@ -20,34 +20,35 @@ public class DbQueryService
         this.saveoneContext = saveoneContext;
     }
 
-    private IQueryable GetQueryable(string tableName, int enterPriseID)
+    private IQueryable GetQueryable(string tableName, string enterPriseID)
     {
-        // 1. ตรวจสอบสิทธิ์จาก AllTable
-        var allowedTables = _db.Set<AllTable>()
-            .Where(x => x.EnterPriseId == enterPriseID)
-            .Select(x => x.TableName)
-            .ToHashSet();
+        //// 1. ตรวจสอบสิทธิ์จาก AllTable
+        //var allowedTables = _db.Set<AllTable>()
+        //    .Where(x => x.EnterPriseId == enterPriseID)
+        //    .Select(x => x.TableName)
+        //    .ToHashSet();
 
-        if (!allowedTables.Contains(tableName))
-            throw new Exception($"Table '{tableName}' not allowed for this enterprise.");
+        //if (!allowedTables.Contains(tableName))
+        //    throw new Exception($"Table '{tableName}' not allowed for this enterprise.");
 
-        // 2. หา entity type จาก EF model
-        var entityType = _db.Model.GetEntityTypes()
-            .FirstOrDefault(e => e.GetTableName() == tableName);
+        //// 2. หา entity type จาก EF model
+        //var entityType = _db.Model.GetEntityTypes()
+        //    .FirstOrDefault(e => e.GetTableName() == tableName);
 
-        if (entityType == null)
-            throw new Exception($"Table '{tableName}' not found in DbContext.");
+        //if (entityType == null)
+        //    throw new Exception($"Table '{tableName}' not found in DbContext.");
 
-        var clrType = entityType.ClrType;
+        //var clrType = entityType.ClrType;
 
-        var method = typeof(DbContext)
-            .GetMethod(nameof(DbContext.Set), Type.EmptyTypes)!
-            .MakeGenericMethod(clrType);
+        //var method = typeof(DbContext)
+        //    .GetMethod(nameof(DbContext.Set), Type.EmptyTypes)!
+        //    .MakeGenericMethod(clrType);
 
-        return (IQueryable)method.Invoke(_db, null)!;
+        //return (IQueryable)method.Invoke(_db, null)!;
+        return  null;
     }
 
-    public async Task<object> Query(IntentResult intent, int enterPriseID)
+    public async Task<object> Query(IntentResult intent, string enterPriseID)
     {
         if (intent.IntentType == "chat")
             return new { message = "No database query required." };
@@ -210,7 +211,7 @@ public class DbQueryService
         return result;
     }
 
-    public async Task<object> Compare(IntentResult intent, int enterPriseID)
+    public async Task<object> Compare(IntentResult intent, string enterPriseID)
     {
         if (string.IsNullOrEmpty(intent.CompareField))
             throw new Exception("CompareField is required.");
@@ -356,10 +357,12 @@ public class DbQueryService
     {
         var member = saveoneContext.SaveoneGoMembers
             .FirstOrDefault(x => x.LineUserId == lineUser);
-        var memMain = saveoneContext.Members.FirstOrDefault(x => x.Id == member.MemberId);
-
         if (member == null)
-            return JsonConvert.SerializeObject(null);
+            return "Don't have this user in Database";
+        var memMain = saveoneContext.Members.FirstOrDefault(x => x.Id == member.MemberId);
+        if (memMain == null)
+            return "Don't have this user in Database";
+
 
         // -------------------------------
         // 1. โหลด FoodCategory (กัน OPENJSON)
@@ -487,14 +490,14 @@ public class DbQueryService
                         m.RankNo >= r.RankingStart &&
                         m.RankNo <= r.RankingEnd);
 
-                return new SaveoneMarketData
+                return new SaveoneMarketData 
                 {
                     MarketName = zone?.Name ?? "",
-                    Rank = m.RankNo,
-                    Score = m.Score,
+                    Rank = m.RankNo ?? 0,
+                    Score = m.Score ?? 0,
 
                     // ⭐ แปลง RankName → int
-                    Star = rank?.RankName,
+                    Star = rank?.RankName ?? "1",
 
                     // 🕒 เวลา
                     ReservationTimeStart = rank?.TimeStart?.ToString("HH:mm") ?? "",
@@ -508,7 +511,7 @@ public class DbQueryService
         // -------------------------------
         var result = new SaveoneInfoData
         {
-            Name = memMain.Name ?? member.BankName,
+            Name = memMain.Name ?? member.BankName ?? "",
             WalletBalance = wallet ?? 0,
             MarketData = marketData
         };

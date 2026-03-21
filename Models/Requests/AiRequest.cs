@@ -3,6 +3,6 @@
     {
         public string Question { get; set; }
         public string UserID { get; set; }
-        public int enterPriseId { get; set; }
+        public string enterPriseId { get; set; }
     }
 

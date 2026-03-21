@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AiChatAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9cd08972a3fef6acbd88166fe5986da2e87bfa27")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+230f66ad1dfb20a0f7158b0b7fbd9d70a3fd59a8")]
 [assembly: System.Reflection.AssemblyProductAttribute("AiChatAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AiChatAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
